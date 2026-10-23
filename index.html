@@ -5,22 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
 </head>
 <body>
 
-    <!-- <header>
-        <div class="nav-con d-flex">
-            <h4 class="logo">setta</h4>
-                <ul class="navi d-flex">
-                    <li ><a href="#" class="active">MOTIONCRAFT</a></li>
-                    <li><a href="#">ABOUT</a></li>
-                    <li><a href="#">CRAFTED</a></li>
-                    <li><a href="#">FEATURES</a></li>
-                    <li><a href="#">CONTACT</a></li>
-            </ul>
-            <h4> </h4>
-        </div>
-    </header> -->
 
 
     <header class="site-header">
@@ -39,11 +29,7 @@
         </nav>
 
         <!-- 모바일 햄버거 버튼 -->
-        <button class="menu-btn"
-                type="button"
-                aria-label="메뉴 열기"
-                aria-expanded="false"
-                aria-controls="header-nav-mobile">
+        <button class="menu-btn" type="button">
             <span></span>
             <span></span>
             <span></span>
@@ -57,8 +43,10 @@
         <div class="hero-main-title">
             <H1 class="main-text">MOTION<br class="mo-only">CRAFT</H1>
         </div>
-        <div class="hero-main-img">
-            <img src="assets/images/hero-img.png" alt="나무" class="main-img">
+        <div class="hero-main-img"
+             data-aos="fade-up" 
+             data-aos-duration="3000">
+            <img src="assets/images/hero-img.png" alt="의자" class="main-img">
         </div>  
         <div class="point-wrap container">
             <ul class="hero-point d-flex">
@@ -100,6 +88,10 @@
                 <img src="/assets/images/chair-grey.png" alt="회색의자">
             </div>
 
+            <!-- 의자 특징을 가리키는 점 3개 -->
+            <span class="point-dot dot-support"></span>
+            <span class="point-dot dot-move"></span>
+            <span class="point-dot dot-seat"></span>
             
             <div class="text-box d-flex crafted1">
                 <div class="crafted-title">
@@ -534,7 +526,17 @@
 
 </footer>
 <!-- Footer 끝 -->
+    <!-- aos 연결 -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+			AOS.init({
+				easing: 'ease-out-back',
+				duration: 1000
+			});
+		</script>
 
+    <!-- 0. swiper 연결 -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 
     <!-- 1. jQuery 라이브러리 연결 -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -542,5 +544,6 @@
     <!-- 2. 내가 작성한 JS 파일 연결 -->
     <script src="./assets/js/script.js"></script>
 
+    
 </body>
 </html>

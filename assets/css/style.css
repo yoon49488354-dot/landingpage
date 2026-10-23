@@ -101,6 +101,8 @@
     margin-top: -100px;
     z-index: 5;
     width: clamp(570px, 49.1026vw, 766px);
+    position: relative;
+    top: 1.5rem;
 }
 
 
@@ -161,7 +163,7 @@
     color: #fff;
     padding: 176px 20px;
     position: relative;
-    margin-top: -165px;
+    margin-top: -120px;
 }
 .hero-about h2{
     font-size:56px;
@@ -180,14 +182,15 @@
     gap: 20px;
 }
 .hero-btn {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
 
-    width: 14.4375rem;
-    min-height: 3.5625rem;
-    padding:0.625rem 0;
+    /* width: 295px;
+    height: 57px; */
+    align-self: flex-start;
+    padding:0.625rem 1rem;
 
     border: none;
     border-radius: 2.5rem;
@@ -199,6 +202,7 @@
     font-weight: 600;
     cursor: pointer;
 }
+
 /* 버튼 화살표 */
 .hero-btn::before {
     content: "➜";
@@ -214,6 +218,20 @@
 
     border-radius: 100%;
     font-size: 1rem;
+}
+
+.hero-btn:hover {
+    background-color: #000;
+    color: #fff;
+}
+.hero-btn::before {
+    transition: background-color 0.3s ease,
+                color 0.3s ease;
+}
+
+.hero-btn:hover::before {
+    background-color: #fff;
+    color: #000;
 }
 
 /* hero-about 끝 */
@@ -243,6 +261,40 @@
     height: 804px;
     margin: 0 auto;
 }
+/* 공통 점 디자인 */
+.point-dot {
+    position: absolute;
+
+    width: 0.5rem;
+    height: 0.5rem;
+
+    background-color: #1B1D18;
+    border-radius: 50%;
+
+    z-index: 3;
+}
+
+/* 01 SUPPORT */
+.dot-support {
+    top: 39.5%;
+    left: 31.5%;
+    background-color: olivedrab ;
+}
+
+/* 02 MOVE */
+.dot-move {
+    top: 20.7%;
+    left: 67%;
+    background-color: olivedrab ;
+}
+
+/* 03 FITTED SEAT */
+.dot-seat {
+    top: 46.1%;
+    left: 58%;
+    background-color: olivedrab ;
+}
+
 
 .crfated-main-title{
     display: flex;
@@ -459,7 +511,7 @@
     background-color: #F7F5EF;
     border: none;
     border-radius: 20px;
-    padding: 10px 16px;
+    padding: 10px 6px;
     cursor: pointer;
     white-space: nowrap;
 }
@@ -906,7 +958,7 @@
 
     .nav-container {
         padding: 20px 24px;
-        gap: 0;s
+        gap: 0;
     }
 
     .logo {
@@ -922,22 +974,40 @@
         padding: 8px;
         white-space: nowrap;
     }
-
-    .menu-btn {
-        display: none;
-    }
+    
 }
 
 
 /* 태블릿 */
 @media (max-width: 1024px) {
 
-    .header-nav{
-
-    }
 
     .mo-only {
         display: block;
+    }
+
+    
+
+    .header-nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+
+        background-color: #F7F5EF;
+        padding: 1.5rem;
+        box-sizing: border-box;
+        z-index: 20;
+    }
+
+    .nav-container {
+        position: relative;
+    }
+
+    .header-nav a {
+        display: block;
+        padding: 0.75rem 0;
     }
 
     /* KV  */
