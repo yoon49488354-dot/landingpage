@@ -149,30 +149,71 @@
     background-color: #1b1d1b;
 }
 
+/* hero-about 시작 */
 .hero-text{
     gap: 155px;
     font-weight: 100;
+    justify-content: center;
+    align-items: center;
 }
-
 .hero-about{
-    /* margin-top:-263px; */
     background-color: #1B1D18;
     color: #fff;
-    padding: 176px 0;
+    padding: 176px 20px;
     position: relative;
     margin-top: -165px;
 }
-
 .hero-about h2{
     font-size:56px;
     font-weight: 800;
-    letter-spacing: 5%;
+    letter-spacing: 0.05rem;
     font-weight: 900;
 }
 .hero-about p{
     font-size: 16px;
-    letter-spacing: 5%;
-    font-weight: 500;
+    lletter-spacing: 0.05rem;
+    font-weight: 400;
+}
+.about-text-btn{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+
+    width: 14.4375rem;
+    min-height: 3.5625rem;
+    padding:0.625rem 0;
+
+    border: none;
+    border-radius: 2.5rem;
+
+    background-color: #F7F5EF;
+    color: #1B1D18;
+
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+/* 버튼 화살표 */
+.hero-btn::before {
+    content: "➜";
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 10px;
+
+    background-color: #1B1D18;
+    color: white;
+
+    border-radius: 100%;
+    font-size: 1rem;
 }
 
 /* hero-about 끝 */
@@ -847,9 +888,6 @@
 
 
 
-
-
-
 @media (max-width: 1200px) {
     .contents {
         width: 100%;
@@ -868,7 +906,7 @@
 
     .nav-container {
         padding: 20px 24px;
-        gap: 0;
+        gap: 0;s
     }
 
     .logo {
@@ -977,6 +1015,14 @@
 
     .hero-btn {
         align-self: flex-start;
+    }
+
+     .hero-btn {
+        width: 12.5rem;
+        min-height: 3rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 1rem;
+        gap: 0.5rem;
     }
 
 
@@ -1592,6 +1638,7 @@
 
     .hero-text {
         gap: 20px;
+        
     }
 
     .hero-about h2 {
@@ -1610,7 +1657,7 @@
         padding: 10px 16px;
         border-radius: 30px;
         cursor: pointer;
-    }
+    } 
 
    
     .mo-only {
