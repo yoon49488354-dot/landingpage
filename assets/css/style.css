@@ -173,7 +173,8 @@
 }
 .hero-about p{
     font-size: 16px;
-    lletter-spacing: 0.05rem;
+    letter-spacing: 0.05rem;
+    line-height: 1.5;
     font-weight: 400;
 }
 .about-text-btn{
@@ -225,13 +226,13 @@
     color: #fff;
 }
 .hero-btn::before {
-    transition: background-color 0.3s ease,
-                color 0.3s ease;
+    transition: background-color 0.3s ease, color  0.3s ease;
 }
 
 .hero-btn:hover::before {
     background-color: #fff;
     color: #000;
+
 }
 
 /* hero-about 끝 */
