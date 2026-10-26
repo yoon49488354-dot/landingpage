@@ -370,10 +370,49 @@
     height: 1px;
     background-color: #1B1D18;
 
-    bottom: 130px;
+    bottom: 160px;
     right: 300px;
     transform: rotate(20deg);
 }
+
+/* =================================
+   Section 3 연결선 애니메이션
+================================= */
+
+/* 선의 시작 상태 */
+.crafted1::before,
+.crafted2::before,
+.crafted3::before {
+    transform: scaleX(0);
+    transition: transform 0.8s ease;
+}
+
+/* SUPPORT: 오른쪽 끝에서 왼쪽으로 */
+.crafted1::before {
+    transform-origin: right center;
+}
+
+/* MOVE: 왼쪽 끝에서 오른쪽으로 */
+.crafted2::before {
+    transform-origin: left center;
+}
+
+/* FITTED SEAT: 회전 각도 유지 */
+.crafted3::before {
+    transform-origin: left center;
+    transform: rotate(20deg) scaleX(0);
+}
+
+/* 애니메이션 실행 */
+.crafted1.show-line::before,
+.crafted2.show-line::before {
+    transform: scaleX(1);
+}
+
+.crafted3.show-line::before {
+    transform: rotate(20deg) scaleX(1);
+}
+
 /* 3페이지 끝 */
 
 /* 4페이지 시작 */
