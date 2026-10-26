@@ -1,95 +1,196 @@
+
 $(document).ready(function () {
+
+    // ====================================
+    // Section 3 애니메이션
+    // ====================================
+
     var $crafted = $('.crafted');
-    if (!$crafted.length) return;
+
+    // Section 3 연결선 요소
+    var $texts = $('.crafted1, .crafted2, .crafted3');
 
     var isCraftedAnimating = false;
     var isCraftedDone = false;
+    var isLineStarted = false;
 
-    // 헤더 높이를 반영한 Section 3 타겟 스크롤 위치 계산
-    function getTargetScroll() {
-        var headerHeight = $('.site-header').outerHeight() || 80;
-        return Math.round($crafted.offset().top - headerHeight);
-    }
+    if ($crafted.length) {
 
-    // 초기 페이지 로드 시 이미 3페이지를 지나쳐 있는 경우 잠금 건너뛰기
-    if ($(window).scrollTop() > getTargetScroll() + 250) {
-        isCraftedDone = true;
-        $crafted.addClass('active');
-    }
+        // 헤더 높이를 반영한 스크롤 위치 계산
+        function getTargetScroll() {
+            var headerHeight = $('.site-header').outerHeight() || 80;
+            return Math.round($crafted.offset().top - headerHeight);
+        }
 
-    // 3페이지 스크롤 감지 및 애니메이션 진행 중 머무름(Lock) 처리
-    function handleCraftedScroll() {
-        if (isCraftedDone || isCraftedAnimating) return;
+        // 연결선 순차 등장
+        function startLineAnimation() {
 
-        var scrollTop = $(window).scrollTop();
-        var targetScroll = getTargetScroll();
+            if (isLineStarted) return;
 
-        // 3페이지가 헤더 아래 시야에 들어왔을 때
-        if (scrollTop >= targetScroll - 100 && scrollTop <= targetScroll + 350) {
+            isLineStarted = true;
+
+            $texts.each(function (index) {
+
+                var $text = $(this);
+
+                setTimeout(function () {
+                    $text.addClass('show-line');
+                }, 950 + index * 350);
+
+            });
+        }
+
+        // Section 3 전체 애니메이션 시작
+        function startCraftedAnimation() {
+
+            if (isCraftedDone || isCraftedAnimating) return;
+
             isCraftedAnimating = true;
+
+            // 기존 설명 텍스트 애니메이션 시작
             $crafted.addClass('active');
 
-            // 3페이지 위치로 부드럽게 정렬
-            $('html, body').stop().animate({ scrollTop: targetScroll }, 250);
+            // 연결선 애니메이션 시작
+            startLineAnimation();
 
-            // 모든 설명 텍스트가 완전히 나오는 시간(약 2.6초) 동안 섹션 머물기
+            var targetScroll = getTargetScroll();
+
+            // Section 3 위치로 이동
+            $('html, body').stop().animate({
+                scrollTop: targetScroll
+            }, 250);
+
+            // 설명 텍스트가 등장할 때까지 유지
             setTimeout(function () {
+
                 isCraftedAnimating = false;
                 isCraftedDone = true;
+
             }, 2600);
         }
-    }
 
-    // 스크롤 이벤트
-    $(window).on('scroll', function () {
-        handleCraftedScroll();
+        // 페이지를 처음 열었을 때 Section 3을 이미 지나친 경우
+        if ($(window).scrollTop() > getTargetScroll() + 250) {
 
-        // 애니메이션 진행 중에 스크롤바 드래그 등으로 내려가는 것 방지
-        if (isCraftedAnimating) {
+            isCraftedDone = true;
+
+            $crafted.addClass('active');
+
+            // 완료 상태로 표시
+            $texts.addClass('show-line');
+            isLineStarted = true;
+        }
+
+        // 스크롤 위치 감지
+        function handleCraftedScroll() {
+
+            if (isCraftedDone || isCraftedAnimating) return;
+
+            var scrollTop = $(window).scrollTop();
             var targetScroll = getTargetScroll();
-            if ($(window).scrollTop() > targetScroll + 5) {
-                $(window).scrollTop(targetScroll);
+
+            if (
+                scrollTop >= targetScroll - 100 &&
+                scrollTop <= targetScroll + 350
+            ) {
+                startCraftedAnimation();
             }
         }
-    });
 
-    // 화면 진입 즉시 감지를 위한 IntersectionObserver
-    if ('IntersectionObserver' in window) {
-        var observer = new IntersectionObserver(function (entries) {
-            entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                    $crafted.addClass('active');
-                    handleCraftedScroll();
+        // 스크롤 이벤트
+        $(window).on('scroll', function () {
+
+            handleCraftedScroll();
+
+            if (isCraftedAnimating) {
+
+                var targetScroll = getTargetScroll();
+
+                if ($(window).scrollTop() > targetScroll + 5) {
+                    $(window).scrollTop(targetScroll);
                 }
-            });
-        }, { threshold: 0.15 });
-        observer.observe($crafted[0]);
-    }
+            }
+        });
 
-    // 마우스 휠, 터치, 키보드 입력 시 모든 설명이 나올 때까지 아래로 내려가지 않도록 제어
-    function preventScrollWhileAnimating(e) {
-        if (isCraftedAnimating) {
+        // IntersectionObserver로 Section 3 진입 감지
+        if ('IntersectionObserver' in window) {
+
+            var observer = new IntersectionObserver(function (entries) {
+
+                entries.forEach(function (entry) {
+
+                    if (entry.isIntersecting && !isCraftedDone) {
+
+                        handleCraftedScroll();
+
+                    }
+                });
+
+            }, {
+                threshold: 0.15
+            });
+
+            observer.observe($crafted[0]);
+        }
+
+        // 애니메이션 중 스크롤 제한
+        function preventScrollWhileAnimating(e) {
+
+            if (!isCraftedAnimating) return;
+
             if (e.type === 'wheel') {
-                // 아래로 스크롤 방지
+
                 if (e.deltaY > 0) {
                     e.preventDefault();
                 }
+
             } else if (e.type === 'touchmove') {
+
                 e.preventDefault();
+
             } else if (e.type === 'keydown') {
-                if (['ArrowDown', 'PageDown', ' ', 'ArrowUp', 'PageUp'].indexOf(e.key) !== -1) {
+
+                if (
+                    ['ArrowDown', 'PageDown', ' ', 'ArrowUp', 'PageUp']
+                    .indexOf(e.key) !== -1
+                ) {
                     e.preventDefault();
                 }
             }
         }
+
+        window.addEventListener(
+            'wheel',
+            preventScrollWhileAnimating,
+            { passive: false }
+        );
+
+        window.addEventListener(
+            'touchmove',
+            preventScrollWhileAnimating,
+            { passive: false }
+        );
+
+        window.addEventListener(
+            'keydown',
+            preventScrollWhileAnimating,
+            { passive: false }
+        );
+
+        // 최초 진입 시에도 감지
+        handleCraftedScroll();
     }
 
-    window.addEventListener('wheel', preventScrollWhileAnimating, { passive: false });
-    window.addEventListener('touchmove', preventScrollWhileAnimating, { passive: false });
-    window.addEventListener('keydown', preventScrollWhileAnimating, { passive: false });
 
-    // 4페이지 (FEATURES) 카드 클릭/터치 시 플립 토글 (모바일 및 데스크톱 지원)
+    // ====================================
+    // Section 4 카드 뒤집기
+    // ====================================
+
     $('.feature-card').on('click', function () {
+
         $(this).toggleClass('flipped');
+
     });
+
 });
+
