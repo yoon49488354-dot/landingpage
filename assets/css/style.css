@@ -8,20 +8,100 @@
 }
 
 
+/* 부드러운 스크롤 & 고정 헤더 높이만큼 스크롤 오프셋 */
+html {
+    scroll-behavior: smooth;
+}
+
+#hero,
+#about,
+#crafted,
+#features,
+#contact {
+    scroll-margin-top: 80px;
+}
+
 /* header */
 .site-header {
     position: fixed;
+    top: 0;
+    left: 0;
     z-index: 1000;
     background-color: #F7F5EF;
     width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(27, 29, 24, 0.05);
+    transition: background-color 0.4s ease,
+                transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
 }
 
+/* 스크롤 시: 배경색 #1B1D18 (opacity 70%) & 블러 효과 */
+.site-header.header-scrolled {
+    background-color: rgba(27, 29, 24, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 스크롤 시 헤더 내부 텍스트 & 로고 & 햄버거 색상 화이트 전환 */
+.site-header.header-scrolled .logo {
+    color: #F7F5EF;
+}
+
+.site-header.header-scrolled .navi a {
+    color: #F7F5EF;
+    background-color: transparent;
+}
+
+.site-header.header-scrolled .navi a:hover,
+.site-header.header-scrolled .navi a.active {
+    color: #1B1D18;
+    background-color: #F7F5EF;
+}
+
+.site-header.header-scrolled .menu-btn span {
+    background-color: #F7F5EF;
+}
+
+/* hero-about 페이지를 넘어간 후: 헤더 숨김 */
+.site-header.header-hidden {
+    transform: translateY(-100%);
+}
+
+/* 헤더 위치에 마우스를 갖다 대거나, 피크 상태이거나, 모바일 메뉴 열림 시 나타남 */
+.site-header.header-hidden:hover,
+.site-header.header-peek,
+.site-header.header-menu-open {
+    transform: translateY(0) !important;
+}
+
+/* 숨김 상태에서도 상단 마우스 진입을 감지하는 투명 감지 영역 */
+.site-header.header-hidden::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 35px;
+    background: transparent;
+    pointer-events: auto;
+}
 
 .logo {
     font-size: 24px;
     font-weight: 900;
-    /* 소문자를 대문자로 변경해주는 css? */
     text-transform: uppercase;
+    cursor: pointer;
+    user-select: none;
+    color: #1B1D18;
+    transition: opacity 0.2s ease, color 0.3s ease;
+}
+
+.logo:hover {
+    opacity: 0.8;
 }
 
 .navi {
@@ -39,34 +119,26 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     justify-content: space-between;
-
 }
-
-
-/* .active{
-    color: #fff;
-    background: #1B1D18;
-    padding: 10px;
-    border-radius: 100px;
-} */
 
 /* 헤더 메뉴 기본 디자인 */
 .navi a {
     display: inline-block;
     color: #1B1D18;
     background-color: transparent;
-    padding: 10px;
+    padding: 10px 18px;
     border-radius: 100px;
-
+    font-weight: 600;
+    text-decoration: none;
     transition: all 0.3s ease;
 }
 
-/* 마우스를 올렸을 때 */
-.navi a:hover {
+/* 마우스를 올렸을 때 및 활성화 상태 (기본 밝은 배경 헤더) */
+.navi a:hover,
+.navi a.active {
     color: #fff;
     background-color: #1B1D18;
 }
-
 
 .menu-btn {
     display: none;
@@ -137,6 +209,19 @@
 
 
 
+.hero-point li {
+    border: 3px solid #1b1d1b;
+    padding: 10px 16px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: -10px;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+    will-change: transform;
+}
+
 .point1 {
     transform: rotate(-10deg);
     background-color: #F7F5EF;
@@ -155,6 +240,102 @@
 .point4 {
     color: #F7F5EF;
     background-color: #1b1d1b;
+}
+
+/* ========================================================
+   Hero point-wrap 부드러운 포물선 애니메이션
+   - 개별 호버 시 해당 단어만 부드럽게 점프
+   - 1~4를 스쳐 지나갈 시 유기적인 파도타기 포물선 형성
+   - 호버 시마다 매번 즉각 재실행
+======================================================== */
+
+@keyframes smoothParabola1 {
+    0% {
+        transform: translateY(0) rotate(-10deg);
+    }
+    35% {
+        transform: translateY(-28px) rotate(-13deg);
+    }
+    55% {
+        transform: translateY(-30px) rotate(-12deg);
+    }
+    80% {
+        transform: translateY(1.5px) rotate(-9deg);
+    }
+    100% {
+        transform: translateY(0) rotate(-10deg);
+    }
+}
+
+@keyframes smoothParabola2 {
+    0% {
+        transform: translateY(0) rotate(10deg);
+    }
+    35% {
+        transform: translateY(-28px) rotate(13deg);
+    }
+    55% {
+        transform: translateY(-30px) rotate(12deg);
+    }
+    80% {
+        transform: translateY(1.5px) rotate(9deg);
+    }
+    100% {
+        transform: translateY(0) rotate(10deg);
+    }
+}
+
+@keyframes smoothParabola3 {
+    0% {
+        transform: translateY(0) rotate(-10deg);
+    }
+    35% {
+        transform: translateY(-28px) rotate(-13deg);
+    }
+    55% {
+        transform: translateY(-30px) rotate(-12deg);
+    }
+    80% {
+        transform: translateY(1.5px) rotate(-9deg);
+    }
+    100% {
+        transform: translateY(0) rotate(-10deg);
+    }
+}
+
+@keyframes smoothParabola4 {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    35% {
+        transform: translateY(-28px) rotate(3deg);
+    }
+    55% {
+        transform: translateY(-30px) rotate(2deg);
+    }
+    80% {
+        transform: translateY(1.5px) rotate(-1deg);
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+    }
+}
+
+/* 개별 호버 트리거 클래스 */
+.point1.is-jumping {
+    animation: smoothParabola1 0.65s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
+}
+
+.point2.is-jumping {
+    animation: smoothParabola2 0.65s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
+}
+
+.point3.is-jumping {
+    animation: smoothParabola3 0.65s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
+}
+
+.point4.is-jumping {
+    animation: smoothParabola4 0.65s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
 }
 
 /* hero-about 시작 */
@@ -193,59 +374,125 @@
     gap: 20px;
 }
 
-.hero-btn {
-    display: flex;
+/* ========================================================
+   공통 CTA 버튼 스타일 (Section 2, Section 5, Section 7/8)
+   아이폰 밀어서 잠금해제 슬라이딩 모션 & 색상 반전 & 샤인 효과
+======================================================== */
+
+.hero-btn,
+.view-more-btn,
+.contact-btn {
+    position: relative;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.75rem;
-
-    /* width: 295px;
-    height: 57px; */
     align-self: flex-start;
-    padding: 0.625rem 1rem;
-
+    padding: 0.65rem 2rem 0.65rem 3.85rem;
     border: none;
     border-radius: 2.5rem;
-
     background-color: #F7F5EF;
     color: #1B1D18;
-
     font-size: 1.125rem;
     font-weight: 600;
     cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+    box-sizing: border-box;
+    line-height: 1.5;
+    /* 버튼 배경 및 텍스트, 패딩 전환 애니메이션 */
+    transition: background-color 0.4s ease,
+        color 0.4s ease,
+        padding 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+        box-shadow 0.3s ease,
+        transform 0.15s ease;
 }
 
-/* 버튼 화살표 */
-.hero-btn::before {
+/* 원형 화살표 배지: 기본 상태 (왼쪽에 위치) */
+.hero-btn::before,
+.view-more-btn::before,
+.contact-btn::before {
     content: "➜";
-
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    padding: 10px 10px;
-
     background-color: #1B1D18;
-    color: white;
-
-    border-radius: 100%;
-    font-size: 1rem;
+    color: #FFFFFF;
+    border-radius: 50%;
+    font-size: 0.95rem;
+    line-height: 1;
+    z-index: 2;
+    box-sizing: border-box;
+    /* 슬라이드 및 색상 반전 애니메이션 */
+    transition: left 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+        background-color 0.4s ease,
+        color 0.4s ease,
+        transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.hero-btn:hover {
-    background-color: #000;
-    color: #fff;
+/* 아이폰 밀어서 잠금해제 스타일 샤인(빛 스쳐감) 오버레이 */
+/* .hero-btn::after,
+.view-more-btn::after,
+.contact-btn::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.28),
+        transparent
+    );
+    transform: skewX(-20deg);
+    pointer-events: none;
+    z-index: 1;
+    transition: none;
+} */
+
+/* 마우스 호버 시: 배경 검정 & 글자 흰색 색상 반전 & 패딩 반전으로 글자 부드럽게 왼쪽 이동 */
+.hero-btn:hover,
+.view-more-btn:hover,
+.contact-btn:hover {
+    background-color: #000000;
+    color: #FFFFFF;
+    padding: 0.65rem 3.85rem 0.65rem 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.hero-btn::before {
-    transition: background-color 0.3s ease,
-        color 0.3s ease;
+/* 마우스 호버 시: 화살표가 왼쪽에서 오른쪽 끝으로 슬라이딩 (아이폰 밀어서 잠금해제 모션) & 화살표 색상 반전 */
+.hero-btn:hover::before,
+.view-more-btn:hover::before,
+.contact-btn:hover::before {
+    left: calc(100% - 36px - 8px);
+    background-color: #FFFFFF;
+    color: #000000;
+    transform: translateY(-50%) scale(1.05);
 }
 
-.hero-btn:hover::before {
-    background-color: #fff;
-    color: #000;
+/* 마우스 호버 시: 빛이 왼쪽에서 오른쪽으로 슥 스쳐 지나가는 효과 */
+.hero-btn:hover::after,
+.view-more-btn:hover::after,
+.contact-btn:hover::after {
+    left: 160%;
+    transition: left 0.65s ease-in-out;
+}
 
+/* 클릭 시 쫀득한 물리적 눌림 피드백 */
+.hero-btn:active,
+.view-more-btn:active,
+.contact-btn:active {
+    transform: scale(0.97);
 }
 
 /* hero-about 끝 */
@@ -400,7 +647,7 @@
 }
 
 
-.crafted2{
+.crafted2 {
     top: 100px;
     right: 0;
 }
@@ -511,8 +758,8 @@
 /* 설명 텍스트 활성화 */
 .crafted.active .crafted1 .crafted-title,
 .crafted.active .crafted1 p,
-.chair.aos-animate ~ .crafted1 .crafted-title,
-.chair.aos-animate ~ .crafted1 p {
+.chair.aos-animate~.crafted1 .crafted-title,
+.chair.aos-animate~.crafted1 p {
     opacity: 1;
     transform: translateX(0);
     transition-delay: 1.8s;
@@ -520,8 +767,8 @@
 
 .crafted.active .crafted2 .crafted-title,
 .crafted.active .crafted2 p,
-.chair.aos-animate ~ .crafted2 .crafted-title,
-.chair.aos-animate ~ .crafted2 p {
+.chair.aos-animate~.crafted2 .crafted-title,
+.chair.aos-animate~.crafted2 p {
     opacity: 1;
     transform: translateX(0);
     transition-delay: 2.0s;
@@ -529,8 +776,8 @@
 
 .crafted.active .crafted3 .crafted-title,
 .crafted.active .crafted3 p,
-.chair.aos-animate ~ .crafted3 .crafted-title,
-.chair.aos-animate ~ .crafted3 p {
+.chair.aos-animate~.crafted3 .crafted-title,
+.chair.aos-animate~.crafted3 p {
     opacity: 1;
     transform: translateX(0);
     transition-delay: 2.2s;
@@ -566,7 +813,7 @@
     cursor: pointer;
 }
 
-/* 3D 카드 플립 래퍼 및 Image Reveal 래퍼 */
+/* 3D 카드 플립 래퍼 */
 .card-media-wrap {
     position: relative;
     width: 100%;
@@ -602,7 +849,8 @@
     overflow: hidden;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* mouseout 시에는 flip 회전 없이 즉시 원래 앞면으로 복귀 */
+    transition: none;
 }
 
 /* 앞면 */
@@ -627,7 +875,14 @@
     z-index: 1;
 }
 
-/* Hover 및 모바일 탭 시 3D Flip 회전 */
+/* mouse-in (Hover) 및 모바일 탭 시에만 3D Flip 회전 애니메이션 적용 */
+.feature-card:hover .card-front,
+.feature-card:hover .card-back,
+.feature-card.flipped .card-front,
+.feature-card.flipped .card-back {
+    transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 .feature-card:hover .card-front,
 .feature-card.flipped .card-front {
     transform: rotateY(-180deg);
@@ -641,42 +896,12 @@
     z-index: 3;
 }
 
-/* Image Reveal 효과: 앞면 이미지 위로 걷히는 커튼 오버레이 */
-.card-front::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-color: #EDE8DD;
-    z-index: 5;
-    transform: translateY(0);
-    transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
-    pointer-events: none;
-    border-radius: 20px;
-}
-
-.feature-card.aos-animate .card-front::after {
-    transform: translateY(-100%);
-}
-
-/* 카드 순차 리빌 커튼 지연 */
-.feature-card:nth-child(1) .card-front::after { transition-delay: 0.1s; }
-.feature-card:nth-child(2) .card-front::after { transition-delay: 0.3s; }
-.feature-card:nth-child(3) .card-front::after { transition-delay: 0.5s; }
-.feature-card:nth-child(4) .card-front::after { transition-delay: 0.7s; }
-
 .card-front img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 20px;
-    transform: scale(1.15);
-    transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-/* Image Reveal: 카드가 화면에 등장하면 이미지 줌아웃 제자리 안착 */
-.feature-card.aos-animate .card-front img {
-    transform: scale(1);
 }
 
 /* 사진 위에 얹는 70% 어두운 배경 */
@@ -760,6 +985,7 @@
     word-break: keep-all;
     color: #555;
 }
+
 /* 4페이지 끝 */
 
 /* 5페이지 시작 */
@@ -783,10 +1009,42 @@
     gap: clamp(2rem, 5vw, 6.25rem);
 }
 
-.collection .container>img {
+.collection .container>img,
+.collection-main-img-wrap {
     display: block;
     width: 100%;
     height: auto;
+}
+
+/* 왼쪽 대형 메인 이미지 래퍼 & 크로스페이드 트랜지션 */
+.collection-main-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 645 / 788;
+    max-height: 720px;
+    border-radius: 24px;
+    overflow: hidden;
+    background-color: #232622;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+}
+
+.collection-main-img-wrap .collection-main-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.45s ease, visibility 0.45s ease, transform 0.55s ease;
+    transform: scale(1.02);
+}
+
+.collection-main-img-wrap .collection-main-img.active {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
 }
 
 .collection h1 {
@@ -822,23 +1080,71 @@
     font-weight: 600;
 }
 
+/* 의자 컬렉션 Swiper 래퍼 & 양옆 네비게이션 버튼 */
 .chair-collection-wrap {
-    gap: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     margin: 0 0 50px 0;
-    /* display: grid;
-    grid-template-columns: repeat(3,minmax(0,1fr)); */
+    width: 100%;
+    position: relative;
+}
+
+.chair-swiper {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    padding: 14px 2px;
+}
+
+.chair-nav-btn {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(247, 245, 239, 0.3);
+    background-color: rgba(247, 245, 239, 0.08);
+    color: #F7F5EF;
+    font-size: 1.125rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+    padding: 0;
+    line-height: 1;
+    z-index: 10;
+}
+
+.chair-nav-btn:hover {
+    background-color: #F7F5EF;
+    color: #1B1D18;
+    border-color: #F7F5EF;
+    transform: scale(1.08);
+}
+
+.chair-nav-btn.swiper-button-disabled {
+    opacity: 0.2;
+    cursor: default;
+    pointer-events: none;
+    transform: none;
 }
 
 .chair-collection {
-    width: 150px;
     height: 200px;
-    flex: 1 1 0%;
-    min-width: 0;
-    aspect-ratio: 5/4;
-    /* background-color: #F7F5EF; */
-    border-radius: 40px;
+    border-radius: 20px;
     position: relative;
-    z-index: 99;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.chair-collection:hover,
+.chair-collection.active {
+    transform: translateY(-8px);
 }
 
 .chair-1::after {
@@ -848,7 +1154,16 @@
     background-color: #F7F5EF;
     position: absolute;
     bottom: 0;
-    border-radius: 10%;
+    left: 0;
+    border-radius: 20px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1;
+}
+
+.chair-collection:hover.chair-1::after,
+.chair-collection.active.chair-1::after {
+    background-color: #FFFFFF;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
 }
 
 /* 박스 안의 의자 이미지 */
@@ -858,22 +1173,30 @@
     height: 100%;
     object-fit: contain;
     position: relative;
-    z-index: 8;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.chair-collection:hover img,
+.chair-collection.active img {
+    transform: scale(1.06);
 }
 
 .text-box5-2 {
     font-size: 1.25rem;
     justify-content: space-between;
+    align-items: center;
 }
 
-.text-box5-2 button {
-    font-weight: 600;
-    background-color: #F7F5EF;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 6px;
-    cursor: pointer;
-    white-space: nowrap;
+.text-box5-2 p {
+    font-size: 1.125rem;
+    line-height: 1.4;
+    color: #F7F5EF;
+}
+
+/* 5페이지 VIEW MORE 버튼은 공통 CTA 버튼 스타일을 상속받습니다 */
+.text-box5-2 .view-more-btn {
+    align-self: flex-start;
 }
 
 /* 5페이지 끝 */
@@ -959,41 +1282,84 @@
     line-height: 1.3;
 }
 
+/* 슬라이드 래퍼 및 스크롤바 숨김 */
+.review-slide {
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    padding: 10px 0;
+}
+
+.review-swiper {
+    width: 100%;
+    overflow: hidden;
+    cursor: grab;
+    padding: 10px 0;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.review-swiper:active,
+.review-swiper.is-dragging {
+    cursor: grabbing;
+}
+
 .review-list {
     display: flex;
-    gap: 1.5rem;
-    min-width: 0;
-    flex: 1;
+    align-items: stretch;
+    width: max-content;
+    gap: 24px;
+    overflow: visible !important;
+    flex: none !important;
+    box-sizing: border-box;
+    will-change: transform;
+    transition: none !important;
+    /* 스크롤바 완전 제거 */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
 
-    /* 스크롤 뭐시기라는데 찾아보기 */
-    overflow-x: auto;
-    /* scrollbar-width: none; */
-    scroll-snap-type: x mandatory;
-    overflow-x: auto;
-    overflow-y: hidden;
+.review-list::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+/* 리뷰 카드: 첫번째 카드 색상 통일 (오프화이트, 70% 투명도) */
+.review-card img {
+    pointer-events: none;
+    -webkit-user-drag: none;
 }
 
 .review-card {
     flex: 0 0 clamp(18rem, 25vw, 26rem);
-    min-height: 26rem;
+    width: clamp(18rem, 25vw, 26rem);
+    min-height: 25rem;
+    height: auto;
 
-    background-color: #F8F7F4;
-    border-radius: 3rem;
-    padding: 3rem;
+    background-color: rgba(248, 247, 244, 0.7);
+    color: #1B1D18;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+
+    border-radius: 2.5rem;
+    padding: 2.5rem;
 
     box-sizing: border-box;
 
     display: flex;
     flex-direction: column;
-
-    /* 가로 스크롤을 멈출 때 카드 위치에 맞춰 정렬 */
-    scroll-snap-align: start;
+    justify-content: space-between;
+    flex-shrink: 0;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-
 .review-card.dark {
-    background-color: rgba(0, 0, 0, 70%);
-    color: #fff;
+    background-color: rgba(248, 247, 244, 0.7);
+    color: #1B1D18;
 }
 
 .review-user {
@@ -1035,11 +1401,7 @@
     letter-spacing: 0.1em;
 }
 
-/* 슬라이드 넘길때 */
-.review-slide {
-    flex: 1;
-    min-width: 0;
-}
+
 
 /* 6페이지 끝 */
 
@@ -1210,20 +1572,8 @@
     line-height: 1.4;
 }
 
-/* CONTACT US 버튼 */
+/* 7/8페이지 CONTACT US 버튼은 공통 CTA 버튼 스타일을 상속받습니다 */
 .contact-btn {
-    display: inline-block;
-
-    background-color: #F7F5EF;
-    color: #1B1D18;
-
-    font-size: 1.25rem;
-    font-weight: 600;
-
-    padding: 0.75rem 1.5rem;
-    border-radius: 100px;
-
-    text-decoration: none;
     margin-top: 1rem;
 }
 
@@ -1340,60 +1690,137 @@
 }
 
 
-@media (min-width: 768px) and (max-width: 1024px) {
-
-    .nav-container {
-        padding: 20px 24px;
-        gap: 0;
-    }
-
-    .logo {
-        font-size: clamp(16px, 2vw, 20px);
-    }
-
-    .navi {
-        gap: clamp(8px, 2vw, 24px);
-    }
-
-    .navi a {
-        font-size: clamp(10px, 1.3vw, 14px);
-        padding: 8px;
-        white-space: nowrap;
-    }
-
-}
-
-
-/* 태블릿 */
+/* ========================================================
+   태블릿 & 모바일 헤더 (max-width: 1024px부터 햄버거 메뉴 적용)
+======================================================== */
 @media (max-width: 1024px) {
-
 
     .mo-only {
         display: block;
     }
 
+    /* 1024px 이하에서 헤더는 양옆 로고와 햄버거 버튼으로 배치 */
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 24px;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+    }
 
+    .logo {
+        font-size: 22px;
+    }
 
+    /* 햄버거 버튼 생성 (오른쪽 배치) */
+    .menu-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        z-index: 1001;
+    }
+
+    .menu-btn span {
+        display: block;
+        width: 24px;
+        height: 2.5px;
+        background-color: #1B1D18;
+        border-radius: 2px;
+        transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* 클릭 시 X 모양 변환 */
+    .menu-btn.on span:nth-child(1) {
+        transform: translateY(7.5px) rotate(45deg);
+    }
+
+    .menu-btn.on span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+
+    .menu-btn.on span:nth-child(3) {
+        transform: translateY(-7.5px) rotate(-45deg);
+    }
+
+    /* 1024px 이하에서는 navi>li들이 기본 숨김, 햄버거 클릭 시 아래로 드롭다운 */
     .header-nav {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
         width: 100%;
-
         background-color: #F7F5EF;
-        padding: 1.5rem;
+        padding: 18px 24px 24px;
         box-sizing: border-box;
-        z-index: 20;
+        border-bottom: 1px solid rgba(27, 29, 24, 0.1);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        z-index: 999;
     }
 
-    .nav-container {
-        position: relative;
+    .navi {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        list-style: none;
     }
 
-    .header-nav a {
-        display: block;
-        padding: 0.75rem 0;
+    .navi li {
+        width: auto;
+    }
+
+    .navi a {
+        display: inline-block;
+        width: auto;
+        box-sizing: border-box;
+        padding: 10px 18px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: #1B1D18;
+        background-color: transparent;
+        border-radius: 100px;
+        text-align: left;
+        transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* 호버 시 PC버전처럼 검은색 border-radius가 적용된 검은 바탕 */
+    .navi a:hover,
+    .navi a.active {
+        color: #FFFFFF;
+        background-color: #1B1D18;
+        border-radius: 100px;
+    }
+
+    /* 스크롤 시 모바일 드롭다운 메뉴 스타일 */
+    .site-header.header-scrolled .header-nav {
+        background-color: rgba(27, 29, 24, 0.95);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    .site-header.header-scrolled .navi a {
+        color: #F7F5EF;
+    }
+
+    .site-header.header-scrolled .navi a:hover,
+    .site-header.header-scrolled .navi a.active {
+        color: #1B1D18;
+        background-color: #F7F5EF;
     }
 
     /* KV  */
@@ -1469,16 +1896,19 @@
         display: none;
     }
 
-    .hero-btn {
-        align-self: flex-start;
+    .hero-btn,
+    .view-more-btn,
+    .contact-btn {
+        font-size: 1.05rem;
+        padding: 0.6rem 1.8rem 0.6rem 3.6rem;
+        width: auto;
+        min-height: unset;
     }
 
-    .hero-btn {
-        width: 12.5rem;
-        min-height: 3rem;
-        padding: 0.5rem 0.75rem;
-        font-size: 1rem;
-        gap: 0.5rem;
+    .hero-btn:hover,
+    .view-more-btn:hover,
+    .contact-btn:hover {
+        padding: 0.6rem 3.6rem 0.6rem 1.8rem;
     }
 
 
@@ -1591,7 +2021,8 @@
         align-items: center;
     }
 
-    .collection .container>img {
+    .collection .container>img,
+    .collection-main-img-wrap {
         display: block;
         width: 100%;
         aspect-ratio: 1 / 1;
@@ -1654,9 +2085,9 @@
         line-height: 1.5;
     }
 
-    .text-box5-2 button {
-        font-size: 1.25rem;
-        padding: 0.75rem 1.5rem;
+    .text-box5-2 button,
+    .text-box5-2 .view-more-btn {
+        font-size: 1.05rem;
         border-radius: 3rem;
     }
 
@@ -1726,15 +2157,18 @@
     }
 
     .review-list {
-        gap: 1rem;
+        gap: 20px;
     }
 
     /* 리뷰 카드 */
     .review-card {
         flex: 0 0 clamp(16rem, 38vw, 22rem);
+        width: clamp(16rem, 38vw, 22rem);
         min-height: 24rem;
         padding: 2rem;
         border-radius: 2rem;
+        background-color: rgba(248, 247, 244, 0.7);
+        color: #1B1D18;
     }
 
     /* 프로필 */
@@ -1859,8 +2293,6 @@
 
     /* CONTACT US 버튼 */
     .contact-btn {
-        font-size: 1rem;
-        padding: 0.75rem 1.5rem;
         margin-top: 0.5rem;
     }
 
@@ -1936,159 +2368,15 @@
 @media (max-width: 767px) {
 
     .nav-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        padding: 18px 20px;
-        gap: 0;
+        padding: 16px 20px;
     }
 
     .logo {
-        font-size: 22px;
+        font-size: 20px;
     }
 
-    /* 모바일 메뉴 */
     .header-nav {
-        display: none;
-
-        position: absolute;
-        top: 100%;
-        left: 0;
-
-        width: 100%;
-        padding: 30px 20px;
-
-        background-color: transparent;
-        box-sizing: border-box;
-    }
-
-    .navi {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 30px;
-
-    }
-
-    .navi a {
-        font-size: 16px;
-    }
-
-    .active {
-        padding: 10px 14px;
-    }
-
-    /* 햄버거 버튼 */
-    .menu-btn {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 6px;
-
-        width: 32px;
-        height: 32px;
-        padding: 0;
-
-        background: none;
-        border: none;
-        cursor: pointer;
-    }
-
-    /* 햄버거 선 3개 */
-    .menu-btn span {
-        display: block;
-        width: 100%;
-        height: 2px;
-
-        background-color: #1B1D18;
-        transition: 0.3s ease;
-    }
-
-    /* 클릭 시 X 모양 */
-    .menu-btn.on span:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
-
-    .menu-btn.on span:nth-child(2) {
-        opacity: 0;
-    }
-
-    .menu-btn.on span:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-    }
-
-
-
-    .nav-container {
-        padding: 20px;
-        gap: 0;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .logo {
-        font-size: 24px;
-    }
-
-    /* 모바일 내비게이션 */
-    .header-nav {
-        display: none;
-
-        position: absolute;
-        top: 100%;
-        left: 0;
-
-        width: 100%;
-        background-color: #F7F5EF;
-
-        padding: 24px 20px;
-        box-sizing: border-box;
-    }
-
-    /* 메뉴 세로 배치 */
-    .navi {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 24px;
-    }
-
-    /* 햄버거 버튼 */
-    .menu-btn {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 6px;
-
-        width: 32px;
-        height: 32px;
-
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-    }
-
-    /* 햄버거 선 3개 */
-    .menu-btn span {
-        display: block;
-        width: 100%;
-        height: 2px;
-        background-color: #1B1D18;
-
-        transition: all 0.3s ease;
-    }
-
-    /* 클릭 시 X 모양 */
-    .menu-btn.on span:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
-
-    .menu-btn.on span:nth-child(2) {
-        opacity: 0;
-    }
-
-    .menu-btn.on span:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
+        padding: 16px 20px 20px;
     }
 
     /* KV 제목 */
@@ -2136,11 +2424,34 @@
         letter-spacing: 0;
     }
 
-    .hero-btn {
-        font-size: 13px;
-        padding: 10px 16px;
-        border-radius: 30px;
-        cursor: pointer;
+    .hero-btn,
+    .view-more-btn,
+    .contact-btn {
+        font-size: 0.95rem;
+        padding: 0.55rem 1.5rem 0.55rem 3.4rem;
+        border-radius: 2rem;
+        width: auto;
+    }
+
+    .hero-btn:hover,
+    .view-more-btn:hover,
+    .contact-btn:hover {
+        padding: 0.55rem 3.4rem 0.55rem 1.5rem;
+    }
+
+    .hero-btn::before,
+    .view-more-btn::before,
+    .contact-btn::before {
+        width: 32px;
+        height: 32px;
+        left: 6px;
+        font-size: 0.85rem;
+    }
+
+    .hero-btn:hover::before,
+    .view-more-btn:hover::before,
+    .contact-btn:hover::before {
+        left: calc(100% - 32px - 6px);
     }
 
 
@@ -2210,7 +2521,8 @@
     }
 
     /* 메인 이미지 */
-    .collection .container>img {
+    .collection .container>img,
+    .collection-main-img-wrap {
         grid-column: 1;
         grid-row: 1;
         aspect-ratio: 1.8 / 1;
@@ -2284,11 +2596,11 @@
     }
 
     /* VIEW MORE 버튼 */
-    .text-box5-2 button {
-        width: 100%;
-        padding: 1rem 0;
-        font-size: clamp(1rem, 4vw, 1.25rem);
-        border-radius: 100rem;
+    .text-box5-2 button,
+    .text-box5-2 .view-more-btn {
+        width: auto;
+        align-self: flex-start;
+        border-radius: 2rem;
     }
 
     /* 5페이지 끝 */
@@ -2381,17 +2693,19 @@
 
     /* 리뷰 카드 가로 스크롤 */
     .review-list {
-        gap: 1rem;
-        padding: 0 1rem 1rem;
-        scroll-padding-left: 1rem;
+        gap: 16px;
+        padding: 0;
     }
 
     /* 리뷰 카드 */
     .review-card {
         flex: 0 0 min(80vw, 21rem);
+        width: min(80vw, 21rem);
         min-height: 25rem;
         padding: 2rem;
         border-radius: 2rem;
+        background-color: rgba(248, 247, 244, 0.7);
+        color: #1B1D18;
     }
 
     /* 프로필 */
@@ -2473,14 +2787,7 @@
     /* CONTACT US 버튼 */
     .contact-btn {
         margin-top: 1rem;
-        padding: 0.875rem 1.75rem;
-        border-radius: 100px;
-
-        background-color: #F7F5EF;
-        color: #1B1D18;
-
-        font-size: 1rem;
-        font-weight: 600;
+        align-self: flex-start;
     }
 
     .footer {
