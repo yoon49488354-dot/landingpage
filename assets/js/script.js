@@ -421,7 +421,7 @@ $(document).ready(function () {
                     slidesPerView: 2.5,
                     spaceBetween: 14,
                 },
-                900: {
+                768: {
                     slidesPerView: 3,
                     spaceBetween: 20,
                 }

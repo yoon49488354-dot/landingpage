@@ -32,9 +32,9 @@ html {
     box-sizing: border-box;
     border-bottom: 1px solid rgba(27, 29, 24, 0.05);
     transition: background-color 0.4s ease,
-                transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
-                border-color 0.35s ease,
-                box-shadow 0.35s ease;
+        transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
 }
 
 /* 스크롤 시: 배경색 #1B1D18 (opacity 70%) & 블러 효과 */
@@ -253,15 +253,19 @@ html {
     0% {
         transform: translateY(0) rotate(-10deg);
     }
+
     35% {
         transform: translateY(-28px) rotate(-13deg);
     }
+
     55% {
         transform: translateY(-30px) rotate(-12deg);
     }
+
     80% {
         transform: translateY(1.5px) rotate(-9deg);
     }
+
     100% {
         transform: translateY(0) rotate(-10deg);
     }
@@ -271,15 +275,19 @@ html {
     0% {
         transform: translateY(0) rotate(10deg);
     }
+
     35% {
         transform: translateY(-28px) rotate(13deg);
     }
+
     55% {
         transform: translateY(-30px) rotate(12deg);
     }
+
     80% {
         transform: translateY(1.5px) rotate(9deg);
     }
+
     100% {
         transform: translateY(0) rotate(10deg);
     }
@@ -289,15 +297,19 @@ html {
     0% {
         transform: translateY(0) rotate(-10deg);
     }
+
     35% {
         transform: translateY(-28px) rotate(-13deg);
     }
+
     55% {
         transform: translateY(-30px) rotate(-12deg);
     }
+
     80% {
         transform: translateY(1.5px) rotate(-9deg);
     }
+
     100% {
         transform: translateY(0) rotate(-10deg);
     }
@@ -307,15 +319,19 @@ html {
     0% {
         transform: translateY(0) rotate(0deg);
     }
+
     35% {
         transform: translateY(-28px) rotate(3deg);
     }
+
     55% {
         transform: translateY(-30px) rotate(2deg);
     }
+
     80% {
         transform: translateY(1.5px) rotate(-1deg);
     }
+
     100% {
         transform: translateY(0) rotate(0deg);
     }
@@ -992,10 +1008,11 @@ html {
 .collection {
     background-color: #1b1d1b;
     color: #F7F5EF;
+    width: 100%;
 
-    /* PC 버전: 한 화면에 조화롭게 담기도록 높이 1100px 고정 */
-    height: 1100px;
-    min-height: 1100px;
+    /* 화면 너비에 맞게 자연스럽게 조절되는 가변 높이 (고정 1100px 제거) */
+    height: auto;
+    min-height: auto;
     box-sizing: border-box;
 
     display: flex;
@@ -1003,18 +1020,40 @@ html {
     justify-content: center;
     align-items: center;
 
-    padding: 40px 0;
+    padding: clamp(36px, 3.8vw, 64px) 0 clamp(48px, 4.8vw, 80px);
     position: relative;
     overflow: hidden;
 }
 
+/* "MOTIONCRAFT BY SETTA" 문구: 그리드에 상관없이 화면 양 옆으로 꽉 차게 배치 */
+.collection h1 {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 clamp(16px, 2.5vw, 40px);
+    margin: 0 auto clamp(24px, 3vw, 48px);
+    font-size: clamp(2.5rem, 7vw, 8.5rem);
+    font-weight: 900;
+    text-align: center;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    color: #F7F5EF;
+    flex-shrink: 0;
+}
+
+/* 12열 그리드, 마진 120px, 간격 20px */
 .collection .container {
     display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: 20px;
+    row-gap: 20px;
     align-items: center;
-    gap: clamp(2rem, 4.5vw, 5rem);
     width: 100%;
-    max-height: 780px;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding-left: 120px;
+    padding-right: 120px;
+    box-sizing: border-box;
 }
 
 .collection .container>img,
@@ -1024,19 +1063,16 @@ html {
     height: auto;
 }
 
-/* 왼쪽 대형 메인 이미지 래퍼 & 크로스페이드 트랜지션 (PC 1100px 높이에 최적화) */
+/* 왼쪽 대형 메인 이미지: 12열 중 5열 차지 (span 5) */
 .collection-main-img-wrap {
+    grid-column: span 5;
     position: relative;
     width: 100%;
-    max-width: 480px;
     aspect-ratio: 645 / 788;
-    max-height: 585px;
-    margin: 0 auto;
-    border-radius: 24px;
+    border-radius: clamp(24px, 2.6vw, 40px);
     overflow: hidden;
     background-color: #232622;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
-    justify-self: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
 }
 
 .collection-main-img-wrap .collection-main-img {
@@ -1058,41 +1094,29 @@ html {
     transform: scale(1);
 }
 
-/* 상단 메인 타이틀: 1100px 화면에서 넘치지 않도록 세로 여백 및 폰트 균형 조정 */
-.collection h1 {
-    font-size: clamp(2.5rem, 4.8vw, 4.8rem);
-    font-weight: 800;
-    text-align: center;
-    line-height: 1.1;
-    letter-spacing: 0.04em;
-    padding: 0 20px;
-    white-space: nowrap;
-    margin-bottom: clamp(1.5rem, 2.5vh, 2.5rem);
-    flex-shrink: 0;
-}
-
-/* 오른쪽 콘텐츠 래퍼: 요소들이 겹치거나 눌리지 않도록 균형 잡힌 gap 배치 */
+/* 오른쪽 콘텐츠 래퍼: 12열 중 7열 차지 (span 7) */
 .text-wrap5 {
+    grid-column: span 7;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: clamp(1.4rem, 2vh, 2rem);
+    gap: clamp(1.4rem, 2.2vw, 2.4rem);
     width: 100%;
-    max-width: 650px;
 }
 
 .text-box5 h2 {
-    font-size: clamp(2rem, 2.6vw, 2.85rem);
-    font-weight: 600;
-    margin-bottom: 0.75rem;
+    font-size: clamp(2rem, 2.8vw, 2.85rem);
+    font-weight: 700;
+    margin-bottom: 0.9rem;
     line-height: 1.2;
+    color: #FFFFFF;
 }
 
 .text-box5 p {
-    font-size: clamp(0.925rem, 1vw, 1rem);
-    font-weight: 200;
-    line-height: 1.55;
-    letter-spacing: 0.3px;
+    font-size: clamp(0.85rem, 0.95vw, 0.95rem);
+    font-weight: 300;
+    line-height: 1.65;
+    letter-spacing: 0.25px;
     word-break: keep-all;
     color: rgba(247, 245, 239, 0.9);
 }
@@ -1101,11 +1125,11 @@ html {
     font-weight: 600;
 }
 
-/* 의자 컬렉션 Swiper 래퍼 & 양옆 네비게이션 버튼 (불필요한 margin-bottom 제거) */
+/* 의자 컬렉션 Swiper 래퍼 & 슬림한 chevrons 네비게이션 */
 .chair-collection-wrap {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
     margin: 0;
     width: 100%;
     position: relative;
@@ -1115,19 +1139,19 @@ html {
     flex: 1;
     min-width: 0;
     overflow: hidden;
-    padding: 12px 2px;
+    padding: 10px 2px;
 }
 
+/* 그림과 같은 얇고 세련된 화이트 쉐브론 화살표 */
 .chair-nav-btn {
-    flex: 0 0 38px;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: 1px solid rgba(247, 245, 239, 0.3);
-    background-color: rgba(247, 245, 239, 0.08);
-    color: #F7F5EF;
-    font-size: 1.125rem;
-    font-weight: 700;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 48px;
+    background: transparent;
+    border: none;
+    color: rgba(247, 245, 239, 0.7);
+    font-size: 1.85rem;
+    font-weight: 300;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1140,10 +1164,8 @@ html {
 }
 
 .chair-nav-btn:hover {
-    background-color: #F7F5EF;
-    color: #1B1D18;
-    border-color: #F7F5EF;
-    transform: scale(1.08);
+    color: #FFFFFF;
+    transform: scale(1.18);
 }
 
 .chair-nav-btn.swiper-button-disabled {
@@ -1153,38 +1175,31 @@ html {
     transform: none;
 }
 
+/* 그림과 같이 오프화이트 둥근 사각 박스 전체 카드 */
 .chair-collection {
-    height: 185px;
-    border-radius: 18px;
+    height: 175px;
+    border-radius: 20px;
+    background-color: #F7F5EF;
     position: relative;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
     box-sizing: border-box;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 18px;
 }
 
 .chair-collection:hover,
 .chair-collection.active {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
+    background-color: #FFFFFF;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
 }
 
 .chair-1::after {
-    content: "";
-    width: 100%;
-    height: 135px;
-    background-color: #F7F5EF;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    border-radius: 18px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    z-index: 1;
-}
-
-.chair-collection:hover.chair-1::after,
-.chair-collection.active.chair-1::after {
-    background-color: #FFFFFF;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+    display: none;
 }
 
 /* 박스 안의 의자 이미지 */
@@ -1200,7 +1215,7 @@ html {
 
 .chair-collection:hover img,
 .chair-collection.active img {
-    transform: scale(1.06);
+    transform: scale(1.05);
 }
 
 .text-box5-2 {
@@ -2021,104 +2036,41 @@ html {
         font-size: 1.125rem;
     }
 
-    /* 5페이지 시작 */
+    /* 5페이지 태블릿 (1024px 이하) */
     .collection {
         height: auto;
         min-height: auto;
-        padding: clamp(2rem, 7vw, 6rem) 0;
-        overflow: visible;
+        padding: clamp(32px, 5vw, 56px) 0;
+        overflow: hidden;
     }
 
-    /* 상단 대형 제목 */
     .collection h1 {
-        font-size: clamp(3rem, 7.5vw, 5rem);
-        line-height: 1.15;
-        white-space: normal;
-        max-width: 12ch;
-        margin: 0 auto clamp(2rem, 6vw, 4rem);
-        padding: 0;
-        text-align: center;
-        word-break: keep-all;
+        font-size: clamp(2rem, 6.8vw, 4.4rem);
+        white-space: nowrap;
+        padding: 0 20px;
+        margin: 0 auto clamp(20px, 3vw, 40px);
+        line-height: 1.05;
+        letter-spacing: 0.04em;
     }
 
     .collection .container {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-        column-gap: clamp(2rem, 5vw, 4rem);
-        row-gap: clamp(2rem, 6vw, 4rem);
-        align-items: center;
+        padding-left: clamp(32px, 5vw, 60px);
+        padding-right: clamp(32px, 5vw, 60px);
+        column-gap: 16px;
     }
 
-    .collection .container>img,
     .collection-main-img-wrap {
-        display: block;
-        width: 100%;
-        max-width: 100%;
-        max-height: none;
-        aspect-ratio: 1 / 1;
-        border-radius: 2rem;
-    }
-
-    /* 오른쪽 콘텐츠의 부모 */
-    .text-wrap5 {
-        display: contents;
-    }
-
-    /* Collections 설명 */
-    .text-box5 {
-        grid-column: 2;
-        grid-row: 1;
-    }
-
-    .text-box5 h2 {
-        font-size: clamp(2rem, 4vw, 3rem);
-        margin-bottom: 1.5rem;
-    }
-
-    .text-box5 p {
-        font-size: clamp(0.875rem, 1.5vw, 1rem);
-        line-height: 1.6;
-        word-break: keep-all;
-    }
-
-    .chair-collection-wrap {
-        grid-column: 1 / -1;
-        grid-row: 2;
-        width: 100%;
-        gap: clamp(0.75rem, 2vw, 1.25rem);
+        border-radius: clamp(20px, 3vw, 32px);
     }
 
     .chair-collection {
-        width: auto;
-        height: auto;
-        min-width: 0;
+        height: 160px;
+        padding: 12px 14px;
+        border-radius: 18px;
     }
 
-    .chair-collection img {
-        width: 100%;
-        height: 100%;
-    }
-
-    /* 하단 설명 + 버튼 */
-    .text-box5-2 {
-        grid-column: 1 / -1;
-        grid-row: 3;
-        width: 100%;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1.5rem;
-    }
-
-    /* 하단 설명 */
     .text-box5-2 p {
-        font-size: clamp(1rem, 1.8vw, 3rem);
-        line-height: 1.5;
-    }
-
-    .text-box5-2 button,
-    .text-box5-2 .view-more-btn {
-        font-size: 1.05rem;
-        border-radius: 3rem;
+        font-size: clamp(0.95rem, 1.6vw, 1.1rem);
     }
 
     /* 5페이지 끝 */
@@ -2395,6 +2347,103 @@ html {
 
 
 /* 모바일 */
+/* ========================================================
+   880px 이하: 773px 등 중소형 태블릿에서 글자 넘침 방지 및 1열 반응형 배치
+======================================================== */
+@media (max-width: 880px) {
+    .collection {
+        height: auto;
+        min-height: auto;
+        padding: clamp(32px, 5vw, 56px) 0;
+        overflow-x: hidden;
+    }
+
+    .collection h1 {
+        font-size: clamp(1.75rem, 5.8vw, 3.2rem);
+        white-space: nowrap;
+        padding: 0 16px;
+        margin-bottom: clamp(1.5rem, 3.5vw, 2.5rem);
+        line-height: 1.1;
+        letter-spacing: 0.03em;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .collection .container {
+        display: flex;
+        flex-direction: column;
+        grid-template-columns: none;
+        padding-left: clamp(20px, 4.5vw, 36px);
+        padding-right: clamp(20px, 4.5vw, 36px);
+        gap: clamp(1.75rem, 3.5vw, 2.5rem);
+        width: 100%;
+        max-width: 680px;
+        box-sizing: border-box;
+    }
+
+    .collection-main-img-wrap {
+        grid-column: auto;
+        width: 100%;
+        max-width: 540px;
+        margin: 0 auto;
+        aspect-ratio: 16 / 10;
+        border-radius: clamp(20px, 4vw, 32px);
+    }
+
+    .text-wrap5 {
+        grid-column: auto;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 580px;
+        margin: 0 auto;
+        gap: clamp(1.5rem, 3vw, 2.25rem);
+    }
+
+    .text-box5 h2 {
+        font-size: clamp(1.8rem, 4vw, 2.4rem);
+        margin-bottom: 0.75rem;
+    }
+
+    .text-box5 p {
+        font-size: clamp(0.875rem, 1.8vw, 0.975rem);
+        line-height: 1.6;
+        word-break: keep-all;
+        overflow-wrap: break-word;
+    }
+
+    .chair-collection-wrap {
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .chair-collection {
+        height: 155px;
+        padding: 10px 14px;
+        border-radius: 16px;
+    }
+
+    .text-box5-2 {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1.25rem;
+        width: 100%;
+    }
+
+    .text-box5-2 p {
+        font-size: clamp(0.925rem, 2vw, 1.05rem);
+        line-height: 1.45;
+        margin: 0;
+    }
+
+    .text-box5-2 .view-more-btn {
+        margin: 0;
+        flex-shrink: 0;
+    }
+}
+
 @media (max-width: 767px) {
 
     .nav-container {
@@ -2536,101 +2585,78 @@ html {
         word-break: keep-all;
     }
 
-    /* 5페이지 시작 */
+    /* 5페이지 모바일 (767px 이하) */
+    .collection {
+        padding: clamp(28px, 6vw, 48px) 0;
+    }
+
     .collection h1 {
-        font-size: clamp(2rem, 8vw, 3.5rem);
-        max-width: 12ch;
-        margin-bottom: 3rem;
-        line-height: 1.15;
-    }
-
-    /* 전체 콘텐츠를 세로 1열로 */
-    .collection .container {
-        grid-template-columns: minmax(0, 1fr);
-        row-gap: 0;
-    }
-
-    /* 메인 이미지 */
-    .collection .container>img,
-    .collection-main-img-wrap {
-        grid-column: 1;
-        grid-row: 1;
-        aspect-ratio: 1.8 / 1;
-        object-fit: cover;
-        border-radius: 1.5rem;
-        margin-bottom: 3rem;
-    }
-
-    /* Collections 설명 영역 */
-    .text-box5 {
-        grid-column: 1;
-        grid-row: 2;
-        margin-bottom: 2rem;
-    }
-
-    /* Collections 제목 */
-    .text-box5 h2 {
-        font-size: clamp(2rem, 7vw, 3rem);
+        font-size: clamp(0.75rem, 6.2vw, 2.2rem);
+        white-space: nowrap;
         margin-bottom: 1.5rem;
+        line-height: 1.1;
+        padding: 0 12px;
     }
 
-    /* 소개 문장 */
+    .collection .container {
+        padding-left: 16px;
+        padding-right: 16px;
+        gap: 1.5rem;
+    }
+
+    .collection-main-img-wrap {
+        border-radius: 1.5rem;
+        aspect-ratio: 16 / 10;
+        margin-bottom: 0;
+    }
+
+    .text-box5 {
+        margin-bottom: 0;
+    }
+
+    .text-box5 h2 {
+        font-size: clamp(1.6rem, 5.5vw, 2rem);
+        margin-bottom: 0.65rem;
+    }
+
     .text-box5 p {
-        font-size: clamp(0.875rem, 3.5vw, 1rem);
+        font-size: 0.875rem;
         line-height: 1.6;
+        word-break: keep-all;
     }
 
-    /* 의자 3개 가로 유지 */
     .chair-collection-wrap {
-        grid-column: 1;
-        grid-row: 3;
-        gap: clamp(0.4rem, 2vw, 1rem);
-        margin-bottom: 3rem;
+        gap: 0.35rem;
+        margin-bottom: 0;
     }
 
-    /* 의자 배경 박스 */
     .chair-collection {
-        width: auto;
-        height: auto;
-        aspect-ratio: 5 / 4;
-        border-radius: 1rem;
+        height: 140px;
+        padding: 8px 12px;
+        border-radius: 14px;
     }
 
-    /* 베이지색 배경 */
-    .chair-collection::after {
-        height: 75%;
-        border-radius: 15%;
-    }
-
-    /* 의자 이미지 */
     .chair-collection img {
         width: 100%;
         height: 100%;
         object-fit: contain;
     }
 
-    /* 하단 설명과 버튼 세로 배치 */
     .text-box5-2 {
-        grid-column: 1;
-        grid-row: 4;
         flex-direction: column;
-        align-items: stretch;
-        gap: 2rem;
+        align-items: flex-start;
+        gap: 1.25rem;
     }
 
-    /* 하단 설명 가운데 정렬 */
     .text-box5-2 p {
-        font-size: clamp(0.875rem, 3.5vw, 1rem);
-        text-align: center;
-        line-height: 1.5;
+        font-size: 0.95rem;
+        text-align: left;
+        line-height: 1.45;
     }
 
-    /* VIEW MORE 버튼 */
-    .text-box5-2 button,
     .text-box5-2 .view-more-btn {
-        width: auto;
         align-self: flex-start;
-        border-radius: 2rem;
+        font-size: 0.95rem;
     }
 
     /* 5페이지 끝 */
