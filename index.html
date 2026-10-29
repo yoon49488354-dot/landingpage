@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 </head>
 
@@ -87,44 +88,42 @@
 
 
 
-                <div class="chair" data-aos="zoom-in-up" data-aos-duration="1200" data-aos-offset="150"
-                    data-aos-once="true">
+                <div class="chair">
                     <img src="assets/images/sec03-grey-chair.png" alt="회색의자">
                 </div>
 
-                <!-- 의자 특징을 가리키는 점 3개 -->
-                <span class="point-dot dot-support" data-aos="zoom-in" data-aos-delay="1100"
-                    data-aos-duration="500"></span>
-                <span class="point-dot dot-move" data-aos="zoom-in" data-aos-delay="1400"
-                    data-aos-duration="500"></span>
-                <span class="point-dot dot-seat" data-aos="zoom-in" data-aos-delay="1800"
-                    data-aos-duration="500"></span>
+                <!-- 의자 특징을 가리키는 점 3개 (opacity 0↔1 반복) -->
+                <span class="point-dot dot-support"></span>
+                <span class="point-dot dot-move"></span>
+                <span class="point-dot dot-seat"></span>
 
 
-                <!-- 01 SUPPORT -->
-                <div class="text-box d-flex crafted1">
-                    <div class="crafted-title" data-aos="fade-right" data-aos-offset="400" data-aos-delay="2400"
-                        data-aos-easing="ease-in-sine">
+                <!-- 01 SUPPORT (모바일: AOS fade-up) -->
+                <div class="text-box d-flex crafted1" data-aos="fade-up" data-aos-duration="900"
+                    data-aos-delay="100" data-aos-easing="ease-out-cubic" data-aos-once="true"
+                    data-aos-anchor="#crafted">
+                    <div class="crafted-title">
                         <h4>01</h4>
                         <h4>SUPPORT</h4>
                     </div>
 
-                    <p data-aos="fade-right" data-aos-offset="400" data-aos-delay="2400" data-aos-easing="ease-in-sine">
+                    <p>
                         앉는 순간 인체의 곡선을 따라<br>
                         설계한 프레임이 자연스럽게<br>
                         몸을 감싸줍니다.
                     </p>
                 </div>
 
-                <!-- 02 MOVE -->
-                <div class="text-box d-flex crafted2">
-                    <div class="crafted-title" data-aos="fade-left" data-aos-offset="400" data-aos-delay="2800"
-                        data-aos-easing="ease-in-sine">
+                <!-- 02 MOVE (모바일: AOS fade-up) -->
+                <div class="text-box d-flex crafted2" data-aos="fade-up" data-aos-duration="900"
+                    data-aos-delay="280" data-aos-easing="ease-out-cubic" data-aos-once="true"
+                    data-aos-anchor="#crafted">
+                    <div class="crafted-title">
                         <h4>02</h4>
                         <h4>MOVE</h4>
                     </div>
 
-                    <p data-aos="fade-left" data-aos-offset="400" data-aos-delay="2800" data-aos-easing="ease-in-sine">
+                    <p>
                         틸티드 기능을 탑재한 프레임이 앉은<br>
 
                         자세의 변화를 유연하게 받아들여<br>
@@ -132,15 +131,16 @@
                     </p>
                 </div>
 
-                <!-- 03 FITTED SEAT -->
-                <div class="text-box d-flex crafted3">
-                    <div class="crafted-title" data-aos="fade-left" data-aos-offset="400" data-aos-delay="3000"
-                        data-aos-easing="ease-in-sine">
+                <!-- 03 FITTED SEAT (모바일: AOS fade-up) -->
+                <div class="text-box d-flex crafted3" data-aos="fade-up" data-aos-duration="900"
+                    data-aos-delay="460" data-aos-easing="ease-out-cubic" data-aos-once="true"
+                    data-aos-anchor="#crafted">
+                    <div class="crafted-title">
                         <h4>03</h4>
                         <h4>FITTED SEAT</h4>
                     </div>
 
-                    <p data-aos="fade-left" data-aos-delay="3000" data-aos-easing="ease-in-sine">너무 길지도 좁지도 않은 좌판이
+                    <p>너무 길지도 좁지도 않은 좌판이
                         압력을<br>
                         고르게 분산해 오래 앉아도<br>
                         편안함을 유지합니다.
@@ -161,7 +161,7 @@
                     <h2>디테일 하나까지,<br>당신의 더 편안한 순간을 위해</h2>
                 </div>
 
-                <div class="feature-wrap d-flex">
+                <div class="feature-wrap">
                     <!-- 카드 1 -->
                     <div class="feature-card" data-aos="fade" data-aos-delay="0" data-aos-duration="700"
                         data-aos-anchor=".features" data-aos-once="true">
@@ -479,64 +479,48 @@
                 <p>SETTA에 대해 가장 자주 묻는 질문을 모았습니다.</p>
             </div>
 
-            <!-- 질문 목록 -->
-            <div class="faq-list">
+            <!-- 질문 목록 (jQuery UI Accordion) -->
+            <div id="faq-accordion" class="faq-list">
 
-                <!-- 질문 1 -->
-                <details class="faq-item">
-                    <summary>
-                        <span>무상 A/S 기간이 어떻게 되나요?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
+                <h3>
+                    <span class="faq-question">무상 A/S 기간이 어떻게 되나요?</span>
+                    <span class="faq-icon" aria-hidden="true"></span>
+                </h3>
+                <div class="faq-answer">
+                    <p>무상 A/S 기간에 대한 안내입니다.</p>
+                </div>
 
-                    <div class="faq-answer">
-                        <p>무상 A/S 기간에 대한 안내입니다.</p>
-                    </div>
-                </details>
+                <h3>
+                    <span class="faq-question">대량 구매시 할인이 있나요?</span>
+                    <span class="faq-icon" aria-hidden="true"></span>
+                </h3>
+                <div class="faq-answer">
+                    <p>대량 구매 할인 및 상담 방법에 대한 안내가 들어갑니다.</p>
+                </div>
 
-                <!-- 질문 2 -->
-                <details class="faq-item">
-                    <summary>
-                        <span>대량 구매시 할인이 있나요?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-answer">
-                        <p>대량 구매 할인 및 상담 방법에 대한 안내가 들어갑니다.</p>
-                    </div>
-                </details>
+                <h3>
+                    <span class="faq-question">패브릭 관리 방법이 어떻게 되나요?</span>
+                    <span class="faq-icon" aria-hidden="true"></span>
+                </h3>
+                <div class="faq-answer">
+                    <p>패브릭 청소 및 관리 방법에 대한 안내가 들어갑니다.</p>
+                </div>
 
-                <!-- 질문 3 -->
-                <details class="faq-item">
-                    <summary>
-                        <span>패브릭 관리 방법이 어떻게 되나요?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-answer">
-                        <p>패브릭 청소 및 관리 방법에 대한 안내가 들어갑니다.</p>
-                    </div>
-                </details>
+                <h3>
+                    <span class="faq-question">MOTIONCRAFT의 다른 디자인은 없나요?</span>
+                    <span class="faq-icon" aria-hidden="true"></span>
+                </h3>
+                <div class="faq-answer">
+                    <p>MOTIONCRAFT 제품 라인업에 대한 안내가 들어갑니다.</p>
+                </div>
 
-                <!-- 질문 4 -->
-                <details class="faq-item">
-                    <summary>
-                        <span>MOTIONCRAFT의 다른 디자인은 없나요?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-answer">
-                        <p>MOTIONCRAFT 제품 라인업에 대한 안내가 들어갑니다.</p>
-                    </div>
-                </details>
-
-                <!-- 질문 5 -->
-                <details class="faq-item">
-                    <summary>
-                        <span>교환 및 환불이 가능한가요?</span>
-                        <span class="faq-icon" aria-hidden="true"></span>
-                    </summary>
-                    <div class="faq-answer">
-                        <p>교환 및 환불 조건과 신청 방법에 대한 안내가 들어갑니다.</p>
-                    </div>
-                </details>
+                <h3>
+                    <span class="faq-question">교환 및 환불이 가능한가요?</span>
+                    <span class="faq-icon" aria-hidden="true"></span>
+                </h3>
+                <div class="faq-answer">
+                    <p>교환 및 환불 조건과 신청 방법에 대한 안내가 들어갑니다.</p>
+                </div>
 
             </div>
         </div>
@@ -632,6 +616,9 @@
 
     <!-- 1. jQuery 라이브러리 연결 -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- 1-1. jQuery UI (FAQ Accordion) -->
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
     <!-- 2. 내가 작성한 JS 파일 연결 -->
     <script src="./assets/js/script.js"></script>

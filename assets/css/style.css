@@ -159,7 +159,8 @@ html {
     height: 220px;
     overflow: hidden;
     padding-top: 80px;
-
+    position: relative;
+    z-index: 1;
 }
 
 .main-text {
@@ -169,6 +170,26 @@ html {
     line-height: 100%;
     letter-spacing: 0.05em;
     white-space: nowrap;
+    opacity: 0;
+    transform: translateY(55%);
+    animation: logoRiseFromChair 2.8s cubic-bezier(0.22, 0.61, 0.36, 1) 0.35s forwards;
+}
+
+/* KV MOTIONCRAFT: 의자 뒤에서 천천히 페이드되며 아래에서 위로 상승 */
+@keyframes logoRiseFromChair {
+    0% {
+        opacity: 0;
+        transform: translateY(55%);
+    }
+
+    35% {
+        opacity: 0.35;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .main-img {
@@ -185,6 +206,8 @@ html {
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    z-index: 5;
 }
 
 .point-wrap {
@@ -200,26 +223,13 @@ html {
 
 .hero-point li {
     border: 3px solid #1b1d1b;
-    padding: 10px;
-    border-radius: 100px;
-    font-size: 16px;
-    font-weight: 600;
-    margin-left: -10px;
-}
-
-
-
-.hero-point li {
-    border: 3px solid #1b1d1b;
     padding: 10px 16px;
     border-radius: 100px;
     font-size: 16px;
     font-weight: 600;
     margin-left: -10px;
-    cursor: pointer;
     user-select: none;
     box-sizing: border-box;
-    will-change: transform;
 }
 
 .point1 {
@@ -240,118 +250,6 @@ html {
 .point4 {
     color: #F7F5EF;
     background-color: #1b1d1b;
-}
-
-/* ========================================================
-   Hero point-wrap 부드러운 포물선 애니메이션
-   - 개별 호버 시 해당 단어만 부드럽게 점프
-   - 1~4를 스쳐 지나갈 시 유기적인 파도타기 포물선 형성
-   - 호버 시마다 매번 즉각 재실행
-======================================================== */
-
-@keyframes smoothParabola1 {
-    0% {
-        transform: translateY(0) rotate(-10deg);
-    }
-
-    35% {
-        transform: translateY(-28px) rotate(-13deg);
-    }
-
-    55% {
-        transform: translateY(-30px) rotate(-12deg);
-    }
-
-    80% {
-        transform: translateY(1.5px) rotate(-9deg);
-    }
-
-    100% {
-        transform: translateY(0) rotate(-10deg);
-    }
-}
-
-@keyframes smoothParabola2 {
-    0% {
-        transform: translateY(0) rotate(10deg);
-    }
-
-    35% {
-        transform: translateY(-28px) rotate(13deg);
-    }
-
-    55% {
-        transform: translateY(-30px) rotate(12deg);
-    }
-
-    80% {
-        transform: translateY(1.5px) rotate(9deg);
-    }
-
-    100% {
-        transform: translateY(0) rotate(10deg);
-    }
-}
-
-@keyframes smoothParabola3 {
-    0% {
-        transform: translateY(0) rotate(-10deg);
-    }
-
-    35% {
-        transform: translateY(-28px) rotate(-13deg);
-    }
-
-    55% {
-        transform: translateY(-30px) rotate(-12deg);
-    }
-
-    80% {
-        transform: translateY(1.5px) rotate(-9deg);
-    }
-
-    100% {
-        transform: translateY(0) rotate(-10deg);
-    }
-}
-
-@keyframes smoothParabola4 {
-    0% {
-        transform: translateY(0) rotate(0deg);
-    }
-
-    35% {
-        transform: translateY(-28px) rotate(3deg);
-    }
-
-    55% {
-        transform: translateY(-30px) rotate(2deg);
-    }
-
-    80% {
-        transform: translateY(1.5px) rotate(-1deg);
-    }
-
-    100% {
-        transform: translateY(0) rotate(0deg);
-    }
-}
-
-/* 개별 호버 트리거 클래스 */
-.point1.is-jumping {
-    animation: smoothParabola1 0.65s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
-}
-
-.point2.is-jumping {
-    animation: smoothParabola2 0.65s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
-}
-
-.point3.is-jumping {
-    animation: smoothParabola3 0.65s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
-}
-
-.point4.is-jumping {
-    animation: smoothParabola4 0.65s cubic-bezier(0.25, 0.9, 0.35, 1) forwards;
 }
 
 /* hero-about 시작 */
@@ -539,65 +437,65 @@ html {
     margin: 0 auto;
 }
 
-/* 공통 점 디자인 */
+/* 공통 점 디자인 (기존 0.5rem 대비 약 30% 확대) */
 .point-dot {
     position: absolute;
-    width: 0.5rem;
-    height: 0.5rem;
-    background-color: #1B1D18;
+    width: 0.65rem;
+    height: 0.65rem;
+    background-color: olivedrab;
     border-radius: 50%;
     z-index: 3;
+    box-shadow: 0 0 0 5px rgba(107, 142, 35, 0.25);
 
-    /* 초기 상태: 숨김 및 축소 */
+    /* 초기 상태: 숨김 */
     opacity: 0;
-    transform: scale(0);
-    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+}
+
+/* opacity 0 → 100 반복 */
+@keyframes pointDotOpacityLoop {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 /* 01 SUPPORT */
 .dot-support {
     top: 39.5%;
     left: 31.5%;
-    background-color: olivedrab;
-    box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.25);
 }
 
 /* 02 MOVE */
 .dot-move {
     top: 20.7%;
     left: 67%;
-    background-color: olivedrab;
-    box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.25);
 }
 
 /* 03 FITTED SEAT */
 .dot-seat {
     top: 46.1%;
     left: 58%;
-    background-color: olivedrab;
-    box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.25);
 }
 
-/* 의자 확대 후 점 3개 순차적 등장 */
-.crafted.active .point-dot,
-.chair.aos-animate~.point-dot {
-    opacity: 1;
-    transform: scale(1);
+/* 섹션 도달 시 점 opacity 0↔1 무한 반복 */
+.crafted.active .point-dot {
+    animation: pointDotOpacityLoop 1.6s ease-in-out infinite alternate;
 }
 
-.crafted.active .dot-support,
-.chair.aos-animate~.dot-support {
-    transition-delay: 0.8s;
+.crafted.active .dot-support {
+    animation-delay: 0s;
 }
 
-.crafted.active .dot-move,
-.chair.aos-animate~.dot-move {
-    transition-delay: 1.1s;
+.crafted.active .dot-move {
+    animation-delay: 0.25s;
 }
 
-.crafted.active .dot-seat,
-.chair.aos-animate~.dot-seat {
-    transition-delay: 1.4s;
+.crafted.active .dot-seat {
+    animation-delay: 0.5s;
 }
 
 
@@ -632,14 +530,6 @@ html {
     letter-spacing: 3px;
 }
 
-/* 선 공통 초기 속성 */
-.crafted1::before,
-.crafted2::before,
-.crafted3::before {
-    opacity: 0;
-    transition: transform 0.4s ease, opacity 0.2s ease;
-}
-
 /* 01 SUPPORT */
 .crafted1 {
     top: 250px;
@@ -657,9 +547,11 @@ html {
     top: 70px;
     left: 220px;
 
-    transform-origin: right center;
-    /* 점(우측)에서 텍스트(좌측)로 확장 */
-    transform: scaleX(0);
+    opacity: 0;
+}
+
+.crafted.active .crafted1::before {
+    opacity: 1;
 }
 
 
@@ -679,9 +571,11 @@ html {
     top: 70px;
     right: 260px;
 
-    transform-origin: left center;
-    /* 점(좌측)에서 텍스트(우측)로 확장 */
-    transform: scaleX(0);
+    opacity: 0;
+}
+
+.crafted.active .crafted2::before {
+    opacity: 1;
 }
 
 /* 03 FITTED SEAT */
@@ -701,102 +595,34 @@ html {
     bottom: 160px;
     right: 300px;
 
-    transform-origin: left center;
-    /* 점(좌측)에서 텍스트(우측)로 확장 */
-    transform: rotate(20deg) scaleX(0);
-}
-
-
-/* =================================
-   Section 3 연결선 애니메이션
-================================= */
-
-/* 선의 시작 상태 */
-.crafted1::before,
-.crafted2::before,
-.crafted3::before {
+    transform: rotate(20deg);
     opacity: 0;
-    transform: scaleX(0);
-    transition: opacity 0.3s ease, transform 0.8s ease;
 }
 
-/* SUPPORT: 오른쪽 끝에서 왼쪽으로 */
-.crafted1::before {
-    transform-origin: right center;
-}
-
-/* MOVE: 왼쪽 끝에서 오른쪽으로 */
-.crafted2::before {
-    transform-origin: left center;
-}
-
-/* FITTED SEAT: 회전 각도 유지 */
-.crafted3::before {
-    transform-origin: left center;
-    transform: rotate(20deg) scaleX(0);
-}
-
-/* 선 애니메이션 실행 */
-.crafted1.show-line::before,
-.crafted2.show-line::before {
+.crafted.active .crafted3::before {
     opacity: 1;
-    transform: scaleX(1);
-}
-
-.crafted3.show-line::before {
-    opacity: 1;
-    transform: rotate(20deg) scaleX(1);
 }
 
 
-/* =================================
-   Section 3 설명 텍스트 애니메이션
-================================= */
-
-/* 1번 설명: 왼쪽에서 등장 */
+/* Section 3 설명 텍스트: PC는 항상 표시, 모바일은 AOS fade-up */
 .crafted1 .crafted-title,
-.crafted1 p {
-    opacity: 0;
-    transform: translateX(-30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-/* 2, 3번 설명: 오른쪽에서 등장 */
+.crafted1 p,
 .crafted2 .crafted-title,
 .crafted2 p,
 .crafted3 .crafted-title,
 .crafted3 p {
-    opacity: 0;
-    transform: translateX(30px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    opacity: 1;
+    transform: none;
 }
 
-/* 설명 텍스트 활성화 */
-.crafted.active .crafted1 .crafted-title,
-.crafted.active .crafted1 p,
-.chair.aos-animate~.crafted1 .crafted-title,
-.chair.aos-animate~.crafted1 p {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 1.8s;
-}
-
-.crafted.active .crafted2 .crafted-title,
-.crafted.active .crafted2 p,
-.chair.aos-animate~.crafted2 .crafted-title,
-.chair.aos-animate~.crafted2 p {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 2.0s;
-}
-
-.crafted.active .crafted3 .crafted-title,
-.crafted.active .crafted3 p,
-.chair.aos-animate~.crafted3 .crafted-title,
-.chair.aos-animate~.crafted3 p {
-    opacity: 1;
-    transform: translateX(0);
-    transition-delay: 2.2s;
+/* PC: crafted 01~03 AOS 비활성화 */
+@media (min-width: 1025px) {
+    .crafted .text-box[data-aos],
+    .crafted .text-box[data-aos].aos-animate {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+    }
 }
 
 /* 3페이지 끝 */
@@ -820,7 +646,7 @@ html {
 
 .feature-wrap {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1.5rem;
 }
 
@@ -1479,88 +1305,122 @@ html {
     line-height: 1.5;
 }
 
-/* 질문 카드 전체 */
-.faq-list {
+/* 질문 카드 전체 (jQuery UI Accordion) */
+.faq-list.ui-accordion {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.875rem;
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-family: inherit;
 }
 
-/* 질문 카드 한 개 */
-.faq-item {
-    background-color: #fff;
-    border-radius: 1.25rem;
-    padding: 1.5rem;
+/* jQuery UI 기본 테마 리셋 */
+.faq-list .ui-accordion-header,
+.faq-list .ui-accordion-content,
+.faq-list .ui-widget,
+.faq-list .ui-widget-content,
+.faq-list .ui-state-default,
+.faq-list .ui-state-active,
+.faq-list .ui-state-hover,
+.faq-list .ui-state-focus {
+    border: none;
+    background: transparent;
+    color: inherit;
+    outline: none;
+    box-shadow: none;
+    font-family: inherit;
+    font-weight: inherit;
 }
 
-/* 질문과 플러스 버튼 */
-.faq-item summary {
+.faq-list .ui-icon {
+    display: none;
+}
+
+/* 질문 헤더 (+ 버튼 영역: flex 유지) */
+.faq-list .ui-accordion-header,
+.faq-list .ui-accordion-header.ui-state-default,
+.faq-list .ui-accordion-header.ui-state-active,
+.faq-list .ui-accordion-header.ui-state-hover,
+.faq-list .ui-accordion-header.ui-state-focus {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-
+    margin: 0;
+    padding: 15px 35px;
+    background-color: #fff;
+    border-radius: 1.25rem;
     cursor: pointer;
-    list-style: none;
+    transition: background-color 0.35s ease, border-radius 0.35s ease, color 0.35s ease;
 }
 
-/* 질문 글자 */
-.faq-item summary>span:first-child {
+.faq-list .ui-accordion-header.ui-state-active {
+    background-color: #fff;
+    border-radius: 1.25rem 1.25rem 0 0;
+    color: #51563D;
+}
+
+.faq-question {
     font-size: 1.375rem;
     font-weight: 500;
     line-height: 1.4;
     word-break: keep-all;
+    transition: color 0.35s ease, font-weight 0.35s ease;
 }
 
-/* 기본 삼각형 아이콘 숨기기 */
-.faq-item summary::marker {
-    content: "";
-}
-
-/* 플러스 버튼 */
-.faq-icon {
-    flex: 0 0 2rem;
-    width: 2rem;
-    height: 2rem;
-
-    background-color: #1B1D18;
-    border-radius: 50%;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 플러스 기호 만들기 */
-.faq-icon::before {
-    content: "+";
-    color: #fff;
-    font-size: 1.5rem;
-    line-height: 1;
-}
-
-/* 열렸을 때 마이너스 표시 */
-.faq-item[open] .faq-icon::before {
-    content: "−";
-}
-
-/* 열렸을 때 질문 글자 색상 */
-.faq-item[open] summary>span:first-child {
+.faq-list .ui-accordion-header.ui-state-active .faq-question {
     color: #51563D;
     font-weight: 600;
 }
 
-/* 답변 영역 */
-.faq-answer {
-    padding-top: 1.5rem;
+/* 플러스 / 마이너스 아이콘 */
+.faq-icon {
+    flex: 0 0 2rem;
+    width: 2rem;
+    height: 2rem;
+    background-color: #2a2c27;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.35s ease, transform 0.35s ease;
 }
 
-/* 답변 문장 */
+.faq-icon::before {
+    content: "+";
+    color: #fff;
+    font-size: 1.35rem;
+    line-height: 1;
+    transition: transform 0.35s ease;
+}
+
+.faq-list .ui-accordion-header.ui-state-active .faq-icon {
+    background-color: #51563D;
+    transform: rotate(180deg);
+}
+
+.faq-list .ui-accordion-header.ui-state-active .faq-icon::before {
+    content: "−";
+}
+
+/* 답변 패널 */
+.faq-list .ui-accordion-content {
+    margin: 0;
+    padding: 0 35px 15px;
+    background-color: #fff;
+    border-radius: 0 0 1.25rem 1.25rem;
+    overflow: hidden;
+}
+
 .faq-answer p {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.7;
     word-break: keep-all;
-    color: #333;
+    color: #555;
+    margin: 0;
+    padding-top: 0.25rem;
 }
 
 /* 7페이지 FAQ 끝 */
@@ -1896,11 +1756,10 @@ html {
 
 
     .hero-point li {
-        font-size: clamp(12px, 10vw, 16px);
-        padding: 8px;
+        font-size: clamp(16px, 13vw, 21px);
+        padding: 10px 14px;
         border-width: 2px;
         margin-left: 0;
-
     }
 
     .point1,
@@ -1974,23 +1833,12 @@ html {
         display: none;
     }
 
-    /* 태블릿/모바일: 데스크톱용 점/선 숨김 및 설명 텍스트 항상 표시 */
+    /* 태블릿/모바일: 점/선 숨김, 01~03은 AOS fade-up 사용 */
     .point-dot,
     .crafted1::before,
     .crafted2::before,
     .crafted3::before {
         display: none !important;
-    }
-
-    .crafted1 .crafted-title,
-    .crafted1 p,
-    .crafted2 .crafted-title,
-    .crafted2 p,
-    .crafted3 .crafted-title,
-    .crafted3 p {
-        opacity: 1 !important;
-        transform: none !important;
-        transition: none !important;
     }
 
     /* 3페이지 태블릿 반응형 끝 */
@@ -2009,10 +1857,10 @@ html {
         margin-bottom: clamp(3rem, 6vw, 5rem);
     }
 
-    /* 이미지 2개씩 배치 */
+    /* PC/태블릿: 4열 유지 */
     .feature-wrap {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 3rem 1.5rem;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.5rem;
     }
 
     .feature-wrap img {
@@ -2211,18 +2059,30 @@ html {
     }
 
     /* 질문 카드 사이 간격 */
-    .faq-list {
-        gap: 0.875rem;
+    .faq-list.ui-accordion {
+        gap: 0.75rem;
     }
 
-    /* 질문 카드 */
-    .faq-item {
-        padding: clamp(1.125rem, 2.5vw, 1.5rem);
+    /* 질문 헤더 */
+    .faq-list .ui-accordion-header,
+    .faq-list .ui-accordion-header.ui-state-default,
+    .faq-list .ui-accordion-header.ui-state-active {
+        display: flex;
+        padding: 15px 35px;
         border-radius: 1.125rem;
     }
 
+    .faq-list .ui-accordion-header.ui-state-active {
+        border-radius: 1.125rem 1.125rem 0 0;
+    }
+
+    .faq-list .ui-accordion-content {
+        padding: 0 clamp(1.125rem, 2.5vw, 1.5rem) clamp(1.125rem, 2.5vw, 1.5rem);
+        border-radius: 0 0 1.125rem 1.125rem;
+    }
+
     /* 질문 글자 */
-    .faq-item summary>span:first-child {
+    .faq-question {
         font-size: clamp(1.125rem, 2.2vw, 1.375rem);
         line-height: 1.5;
     }
@@ -2476,8 +2336,8 @@ html {
     }
 
     .hero-point li {
-        font-size: 9px;
-        padding: 6px;
+        font-size: 12px;
+        padding: 8px 10px;
         border-width: 1px;
         margin-left: 0px;
     }
@@ -2561,8 +2421,8 @@ html {
     }
 
     .feature-wrap {
-        grid-template-columns: 1fr;
-        gap: 3.5rem;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
     }
 
     .feature-wrap img {
@@ -2905,5 +2765,63 @@ html {
     .footer-bottom p {
         font-size: 0.75rem;
         color: #C0C1BB;
+    }
+}
+
+/* 모바일 720px 이하: features 1열 + 정사각 강제 높이 해제 */
+@media (max-width: 720px) {
+    .feature-wrap {
+        grid-template-columns: 1fr;
+        gap: 2.25rem;
+        max-width: 26rem;
+        margin: 0 auto;
+    }
+
+    /* 정사각(1:1) 대신 글/이미지가 읽기 좋은 비율 */
+    .card-media-wrap {
+        aspect-ratio: 16 / 10;
+    }
+
+    .card-back {
+        padding: 1.25rem 1.35rem;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .card-back-content {
+        align-items: flex-start;
+        text-align: left;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .card-back h4 {
+        font-size: 1.125rem;
+        line-height: 1.35;
+        word-break: keep-all;
+    }
+
+    .card-back p {
+        font-size: 0.9375rem;
+        line-height: 1.65;
+        word-break: keep-all;
+    }
+
+    .feature-text {
+        padding-top: 1rem;
+        text-align: left;
+    }
+
+    .feature-text h3 {
+        font-size: 1.25rem;
+        line-height: 1.4;
+        margin-bottom: 0.4rem;
+        word-break: keep-all;
+    }
+
+    .feature-text p {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        word-break: keep-all;
     }
 }

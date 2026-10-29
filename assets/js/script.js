@@ -119,9 +119,7 @@ $(document).ready(function () {
             // 목적지가 3, 4페이지 이후인 경우 애니메이션 인터럽트 방지를 위해 완료 처리
             if (target === '#features' || target === '#contact') {
                 isCraftedDone = true;
-                isLineStarted = true;
                 $crafted.addClass('active');
-                $texts.addClass('show-line');
                 if (target === '#contact') {
                     isFeaturesDone = true;
                     $features.addClass('active');
@@ -137,29 +135,11 @@ $(document).ready(function () {
 
 
     // ====================================
-    // Hero Section point-wrap 개별 호버 & 파도타기 포물선 애니메이션
-    // ====================================
-
-    // 각 단어(point1, point2, point3, point4)에 마우스가 닿을 때마다 해당 단어만 즉각 점프
-    // 마우스로 1~4를 스쳐 지나갈 경우 유기적으로 파도를 타는 포물선 모션 형성
-    $('.hero-point li').on('mouseenter', function () {
-        var $el = $(this);
-        $el.removeClass('is-jumping');
-        void this.offsetWidth; // 리플로우 강제 트리거 -> 호버할 때마다 매번 100% 즉시 재실행
-        $el.addClass('is-jumping');
-    });
-
-    $('.hero-point li').on('animationend', function () {
-        $(this).removeClass('is-jumping');
-    });
-
-
-    // ====================================
-    // 공통 스크롤 방지 이벤트 리스너
+    // 공통 스크롤 방지 이벤트 리스너 (Section 4만)
     // ====================================
     function preventScrollWhileAnimating(e) {
 
-        if (!isCraftedAnimating && !isFeaturesAnimating) return;
+        if (!isFeaturesAnimating) return;
 
         if (e.type === 'wheel') {
 
@@ -188,54 +168,35 @@ $(document).ready(function () {
 
 
     // ====================================
-    // Section 3 애니메이션 & 스크롤 제어
+    // Section 3 애니메이션 (스크롤 핀 없음)
     // ====================================
 
     var $crafted = $('.crafted');
-    var $texts = $('.crafted1, .crafted2, .crafted3');
 
-    var isCraftedAnimating = false;
     var isCraftedDone = false;
-    var isLineStarted = false;
 
     function getCraftedTargetScroll() {
         var headerHeight = $('.site-header').outerHeight() || 80;
         return Math.round($crafted.offset().top - headerHeight);
     }
 
-    function startLineAnimation() {
-        if (isLineStarted) return;
-        isLineStarted = true;
-
-        $texts.each(function (index) {
-            var $text = $(this);
-            setTimeout(function () {
-                $text.addClass('show-line');
-            }, 950 + index * 350);
-        });
-    }
-
     function startCraftedAnimation() {
-        if (isCraftedDone || isCraftedAnimating) return;
+        if (isCraftedDone) return;
 
-        isCraftedAnimating = true;
+        isCraftedDone = true;
         $crafted.addClass('active');
-        startLineAnimation();
 
-        var targetScroll = getCraftedTargetScroll();
-
-        $('html, body').stop().animate({
-            scrollTop: targetScroll
-        }, 250);
-
-        setTimeout(function () {
-            isCraftedAnimating = false;
-            isCraftedDone = true;
-        }, 2600);
+        // 모바일/태블릿: 01~03 AOS fade-up 트리거
+        if (window.matchMedia('(max-width: 1024px)').matches && window.AOS) {
+            setTimeout(function () {
+                AOS.refresh();
+                $crafted.find('.crafted1, .crafted2, .crafted3').addClass('aos-animate');
+            }, 80);
+        }
     }
 
     function handleCraftedScroll() {
-        if (!$crafted.length || isCraftedDone || isCraftedAnimating) return;
+        if (!$crafted.length || isCraftedDone) return;
 
         var scrollTop = $(window).scrollTop();
         var targetScroll = getCraftedTargetScroll();
@@ -252,8 +213,9 @@ $(document).ready(function () {
         if ($(window).scrollTop() > getCraftedTargetScroll() + 250) {
             isCraftedDone = true;
             $crafted.addClass('active');
-            $texts.addClass('show-line');
-            isLineStarted = true;
+            if (window.matchMedia('(max-width: 1024px)').matches) {
+                $crafted.find('.crafted1, .crafted2, .crafted3').addClass('aos-animate');
+            }
         }
     }
 
@@ -334,12 +296,7 @@ $(document).ready(function () {
         handleCraftedScroll();
         handleFeaturesScroll();
 
-        if (isCraftedAnimating) {
-            var targetScroll = getCraftedTargetScroll();
-            if ($(window).scrollTop() > targetScroll + 5) {
-                $(window).scrollTop(targetScroll);
-            }
-        } else if (isFeaturesAnimating) {
+        if (isFeaturesAnimating) {
             var targetScroll = getFeaturesTargetScroll();
             if ($(window).scrollTop() > targetScroll + 5) {
                 $(window).scrollTop(targetScroll);
@@ -615,6 +572,23 @@ $(document).ready(function () {
             } else {
                 velocity = BASE_SPEED;
             }
+        });
+    }
+
+
+    // ====================================
+    // FAQ — jQuery UI Accordion (부드러운 펼침)
+    // ====================================
+    if ($('#faq-accordion').length && $.fn.accordion) {
+        $('#faq-accordion').accordion({
+            collapsible: true,
+            active: false,
+            heightStyle: 'content',
+            animate: {
+                easing: 'easeOutQuart',
+                duration: 420
+            },
+            header: '> h3'
         });
     }
 
